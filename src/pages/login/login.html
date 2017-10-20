@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Login</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-grid class="center">
+        <ion-row>
+            <img class="image" src="https://www.camsis.cam.ac.uk/sites/www.camsis.cam.ac.uk/files/styles/inline/public/camsis-login_250x250-blue.png?itok=ICOUReVY">
+        </ion-row>
+        <ion-row>
+            <ion-col col-6 offset-3>
+                <ion-item >
+                    <ion-label color="primary" floating>Email</ion-label>
+                    <ion-input id="email" clearInput [(ngModel)]="email" autofocus></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-6 offset-3>
+                <ion-item>
+                    <ion-label color="primary" floating>Password</ion-label>
+                    <ion-input id="password"type="password" clearInput [(ngModel)]="password"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <button ion-button large class="center add-large" (click)="login()">LogIn</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid> 
+</ion-content>

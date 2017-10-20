@@ -86,3 +86,118 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  // margin-right: -50%;
+  transform: translate(-50%, -50%) 
+}
+
+.text-pointer {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.text-pointer:hover {
+  background-color: #CECECE;
+}
+
+.text {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+}
+
+.text2 {
+  width:  50px;
+  height: 50px; 
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  display: flex;
+  align-items: center;
+  margin-top: 2cm;
+}
+
+.text3 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  background: #488aff;
+  color: white;
+}
+
+.text4 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+}
+
+.delete {
+  float:right;
+  margin-top: 2px;
+  margin-right: .8em;
+  padding: 8px 15px;
+  background-color: #F36262 !important;
+  color:white;
+  cursor: pointer
+}
+
+button.large {
+  padding: 10px 150px;
+  left: 9px;
+}
+
+button.add-large {
+  padding: 10px 150px; 
+}
+
+button.add-large2 {
+  padding: 25px 150px; 
+  right: 10px;
+  margin-top: 2cm;
+}
+
+.but-back {
+  color: #488aff;
+  font-size: 50px;
+  margin-left: 0.5cm;
+  margin-top: 0.5cm;
+  cursor: pointer;
+}
+
+.but-exit {
+  color: #488aff;
+  margin-right: 0.5cm;
+  margin-top: 0.5cm;
+  text-align: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.large-update {
+  padding: 10px 35px;
+  margin-top: 2px;
+  margin-right: .8em;
+  background-color: #488aff !important;
+  color:white;
+  cursor: pointer
+}
+
+.large-delete {
+  padding: 10px 41px;
+  margin-top: 2px;
+  margin-right: .8em;
+  background-color: #F36262 !important;
+  color:white;
+  cursor: pointer
+}
+
+.information {
+  left: 152px;
+}
+
+.image {
+  display: block;
+  margin: 0 auto;
+}

@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Add a Bank</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-icon class="but-back" (click)="close()" name="md-arrow-round-back"></ion-icon>
+        </ion-row>
+        <div class="text4 center">
+            <ion-row>
+                <ion-col col-12>
+                    <ion-label>Name:</ion-label>
+                    <ion-input [(ngModel)]="bankName" placeholder="Input name"  autofocus></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-label>Code:</ion-label>
+                    <ion-input [(ngModel)]="bankCode" placeholder="Input code"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-3>
+                    <button ion-button class="add-large2" (click)="add(bankName, bankCode)">
+                        Add
+                    </button>
+                </ion-col>
+            </ion-row>
+        </div>
+    </ion-grid>
+</ion-content>
