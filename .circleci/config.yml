@@ -1,0 +1,55 @@
+#
+# Clicker CircleCI 2.0 configuration file
+#
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: lathonez/clicker:latest
+
+    working_directory: /root/clicker
+
+    steps:
+      # deps already installed in image
+      - checkout
+
+      - run:
+          name: debug environment
+          command: ionic info
+
+      # https://github.com/ionic-team/ionic-app-scripts/issues/1074
+      # - run:
+      #   name: lint
+      #   command: npm run lint
+
+      - run:
+          name: unit test
+          environment:
+            DISPLAY: :99
+            CHROME_BIN: /usr/bin/google-chrome
+            JUNIT_REPORT_PATH: $CIRCLE_TEST_REPORTS/junit/
+            JUNIT_REPORT_NAME: unit-test-results.xml
+          command: xvfb-run npm run test-ci
+
+      - run:
+          name: upload coverage
+          environment:
+            CODECOV_TOKEN: 82961927-13cb-4813-928f-55e6d09daa93
+          command: cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+
+      - run:
+          name: e2e test
+          environment:
+            DISPLAY: :99
+            CHROME_BIN: /usr/bin/google-chrome
+            JUNIT_REPORT_PATH: $CIRCLE_TEST_REPORTS/junit/
+          command: xvfb-run npm run e2e
+
+      - run:
+          name: Prepare
+          command: ionic cordova prepare
+
+      - run:
+          name: Build
+          # shell js shouldn't be necessary, but it is. yay ionic
+          command: npm install shelljs && ionic cordova build browser
