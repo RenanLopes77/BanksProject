@@ -1,6 +1,5 @@
 import { Injectable }                    from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { ToastController }               from 'ionic-angular';
 import { Bank }                          from '../../interfaces/bank';
 import { Observable }                    from 'rxjs/Observable';
 
@@ -9,7 +8,6 @@ export class BankService {
 
     constructor(
         private http: Http,
-        public toastCtrl: ToastController
     ) { }
     banksUrl = 'http://api.imobzi.com/v1/banks'
 
@@ -23,14 +21,13 @@ export class BankService {
                 observer.next(response.json().success.banks as Bank[]);
             },
                 error => {
-                    observer.next(null);
-                    this.errorToast(error.status);               
+                    observer.next(error);               
                 }
             );
         });
     }
 
-    create(bankName: string, bankCode: string): Observable<void>{
+    create(bankName: string, bankCode: string): Observable<Boolean>{
         let myHeaders = new Headers;
         let token: string = localStorage.getItem('token');
         myHeaders.set('Content-Type', 'application/json');
@@ -39,39 +36,36 @@ export class BankService {
         let params: JSON = JSON.parse('{}');
         params['name'] = bankName;
         params['code'] = bankCode;
-        return new Observable<void> (observer => {
+        return new Observable<Boolean> (observer => {
             this.http.post(this.banksUrl, JSON.stringify(params), options).subscribe((response) => {
-                console.log(response);
-                observer.next(null);
+                observer.next(true);
             },
                 error => {
-                    observer.next(null);
-                    this.errorToast(error.status);               
+                    observer.next(false);              
                 }
             );
         });
     }
 
-    delete(bankId: number): Observable<void> {
+    delete(bankId: number): Observable<Boolean> {
         const url = 'http://api.imobzi.com/v1/bank/' + bankId ;
         let myHeaders = new Headers;
         let token: string = localStorage.getItem('token');
         myHeaders.set('Content-Type', 'application/json');
         myHeaders.set('Authorization', token);
         let options = new RequestOptions({ headers: myHeaders });
-        return new Observable<void> (observer => {
+        return new Observable<Boolean> (observer => {
             this.http.delete(url, options).subscribe(() => {
-                observer.next(null);
+                observer.next(true);
             },
                 error => {
-                    observer.next(null);
-                    this.errorToast(error.status);               
+                    observer.next(false);              
                 }
             );
         });
     }
 
-    update(bank: Bank): Observable<void> {
+    update(bank: Bank): Observable<Boolean> {
         const url = 'http://api.imobzi.com/v1/bank/' + bank.db_id ;
         let myHeaders = new Headers;
         let token: string = localStorage.getItem('token');
@@ -81,24 +75,14 @@ export class BankService {
         let params: JSON = JSON.parse('{}');
         params['name'] = bank.name;
         params['code'] = bank.code;
-        return new Observable<void> (observer => {
+        return new Observable<Boolean> (observer => {
             this.http.post(url, JSON.stringify(params), options).subscribe(() => {
-                observer.next(null);
+                observer.next(true);
             },
                 error => {
-                    observer.next(null);
-                    this.errorToast(error.status);               
+                    observer.next(false);              
                 }
             );
         })
-    }
-
-    errorToast(errorCode: string) {
-        const toast = this.toastCtrl.create({
-            message: "Could not complete the operation, error: " + errorCode,
-            duration: 2500,
-            position: 'middle'
-        });
-        toast.present();
     }
 }

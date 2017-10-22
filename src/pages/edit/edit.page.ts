@@ -1,7 +1,14 @@
-import { Component }                                                                    from "@angular/core";
-import { NavParams, ViewController, NavController, AlertController, LoadingController } from "ionic-angular";
-import { BankService }                                                                  from "../services/bank.service";
-import { Bank }                                                                         from "../../interfaces/bank";
+import { Component }        from "@angular/core";
+import { 
+         NavParams, 
+         ViewController,
+         NavController, 
+         AlertController, 
+         LoadingController,  
+         ToastController 
+       }                    from "ionic-angular";
+import { BankService }      from "../services/bank.service";
+import { Bank }             from "../../interfaces/bank";
 
 @Component({
     selector: 'edit-page',
@@ -21,7 +28,8 @@ export class EditPage {
         public viewCtrl: ViewController,
         public alertCtrl: AlertController,
         public navCtrl: NavController,
-        public loadingCtrl: LoadingController
+        public loadingCtrl: LoadingController,
+        public toastCtrl: ToastController
     ) { }
 
     ngOnInit() {
@@ -30,7 +38,10 @@ export class EditPage {
     
     delete(bank: Bank): void {
         this.loading.present();
-        this._bankService.delete(bank.db_id).subscribe(() => {
+        this._bankService.delete(bank.db_id).subscribe((response) => {
+            if(!response){
+                this.errorToast();
+            }
             this.loading.dismiss();
             this.navCtrl.pop();
          });
@@ -38,7 +49,10 @@ export class EditPage {
 
     update(bank: Bank): void {
         this.loading.present();
-        this._bankService.update(bank).subscribe(() => {
+        this._bankService.update(bank).subscribe((response) => {
+            if(!response){
+                this.errorToast();
+            }
             this.loading.dismiss();
             this.navCtrl.pop();
         });
@@ -71,5 +85,14 @@ export class EditPage {
             ]
         });
         alert.present();
+    }
+
+    errorToast() {
+        const toast = this.toastCtrl.create({
+            message: "Could not complete the operation.",
+            duration: 2500,
+            position: 'middle'
+        });
+        toast.present();
     }
 }

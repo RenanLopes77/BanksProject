@@ -1,5 +1,10 @@
 import { Component }                                 from '@angular/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { 
+         ModalController, 
+         NavController, 
+         NavParams, 
+         ToastController
+       }                                             from 'ionic-angular';
 import { BankService }                               from '../services/bank.service';
 import { AddPage }                                   from '../add/add.page';
 import { EditPage }                                  from '../edit/edit.page';
@@ -27,6 +32,7 @@ export class BankPage {
         public navCtrl: NavController, 
         public navParams: NavParams,
         private _bankService: BankService,
+        public toastCtrl: ToastController
     ) { }
 
     ngOnInit(): void {
@@ -36,6 +42,8 @@ export class BankPage {
     getBanks(): void {
         this._bankService.getBanks().subscribe( banks => {
                 this.banks = banks;
+        }, error => {
+            this.errorToast(error);
         });
     }
       
@@ -71,5 +79,14 @@ export class BankPage {
     exit(): void {
         this.navCtrl.setRoot(LoginPage);
         localStorage.clear();
+    }
+
+    errorToast(errorCode: string) {
+    const toast = this.toastCtrl.create({
+        message: "Could not complete the operation, error: " + errorCode,
+        duration: 2500,
+        position: 'middle'
+    });
+    toast.present();
     }
 }
