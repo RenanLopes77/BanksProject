@@ -1,12 +1,12 @@
-import { TestBed, async, inject } from "@angular/core/testing";
+import { TestBed, async, inject } from '@angular/core/testing';
 import { HttpModule,
-         Http, 
+         Http,
          Response,
          ResponseOptions,
-         XHRBackend }                                from "@angular/http";
-import { MockBackend }                               from "@angular/http/testing";
-import { BankService }                               from "../services/bank.service";
-import { Bank }                                      from "../../interfaces/bank";
+         XHRBackend }             from '@angular/http';
+import { MockBackend }            from '@angular/http/testing';
+import { BankService }            from '../services/bank.service';
+import { Bank }                   from '../interfaces/bank';
 
 describe('BankService', () => {
 
@@ -15,7 +15,7 @@ describe('BankService', () => {
             imports: [HttpModule],
             providers: [
                 BankService,
-                { provide: XHRBackend, useClass: MockBackend }
+                { provide: XHRBackend, useClass: MockBackend },
             ],
         });
     });
@@ -41,17 +41,17 @@ describe('BankService', () => {
                 expect(response[0].code).toBe('1');
                 expect(response[0].name).toBe('Banco1');
             });
-        })
+        }),
     );
-    
+
     describe('create()', () => {
         it('should return TRUE',
             inject([BankService, XHRBackend], (_bankService: BankService, mockBackend: MockBackend) => {
                 const mockResponse = {
-                    success: {
-                        bank: 159,
-                        message:'m'   
-                    }
+                        success: {
+                            bank: 159,
+                            message:'m'   
+                        },
                 };
 
                 mockBackend.connections.subscribe((connection) => {
@@ -70,7 +70,7 @@ describe('BankService', () => {
 
     describe('delete()', () => {
         it('should return TRUE',
-            inject([BankService, XHRBackend], (_bankService, mockBackend) => {    
+            inject([BankService, XHRBackend], (_bankService, mockBackend) => {
                 const banks: Bank[] = [
                     {code: '22', name: 'NomeDoBanco2', db_id: 22},
                     {code: '33', name: 'NomeDoBanco3', db_id: 33},

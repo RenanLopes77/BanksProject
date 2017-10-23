@@ -1,11 +1,11 @@
-import { DebugElement }                     from "@angular/core";
-import { TestBed, async, ComponentFixture } from "@angular/core/testing";
-import { FormsModule }                      from "@angular/forms";
-import { By }                               from "@angular/platform-browser";
-import { NavController, IonicModule }       from "ionic-angular";
-import { LoginPage }                        from "./login";
-import { LoginService }                     from "../services/login.service";
-import { Observable }                       from "rxjs/Observable";
+import { DebugElement }                     from '@angular/core';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { FormsModule }                      from '@angular/forms';
+import { By }                               from '@angular/platform-browser';
+import { NavController, IonicModule }       from 'ionic-angular';
+import { LoginPage }                        from './login';
+import { LoginService }                     from '../../services/login.service';
+import { Observable }                       from 'rxjs/Observable';
 
 describe('LoginPage', () => {
 
@@ -16,14 +16,14 @@ describe('LoginPage', () => {
     const password: string = 'p';
 
     class LoginServiceMock {
-        login(email: string, password: string): Observable<Boolean> {
+        private login(email: string, password: string): Observable<Boolean> {
             return new Observable<Boolean> (observer => {
-                if(email == 'e' && password == 'p'){
+                if (email === 'e' && password === 'p') {
                     observer.next(true);
                 } else {
                     observer.next(false);
                 }
-            })
+            });
         }
     }
 
@@ -31,15 +31,15 @@ describe('LoginPage', () => {
         TestBed.configureTestingModule({
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                NavController
+                NavController,
             ],
             declarations: [
-                LoginPage
+                LoginPage,
             ],
             imports: [
                 FormsModule,
-                IonicModule.forRoot(LoginPage)
-            ]
+                IonicModule.forRoot(LoginPage),
+            ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(LoginPage);
@@ -48,15 +48,15 @@ describe('LoginPage', () => {
     }));
 
     it('should confirm the email and password', () => {
-        let deEmail, dePassword: DebugElement;
+        let deEmail: DebugElement;
+        let dePassword: DebugElement;
         comp.email = email;
         comp.password = password;
 
         fixture.detectChanges();
         deEmail = fixture.debugElement.query(By.css('#email'));
         dePassword = fixture.debugElement.query(By.css('#password'));
-        expect(deEmail.attributes["ng-reflect-model"]).toBe('e');
-        expect(dePassword.attributes["ng-reflect-model"]).toBe('p');
-        
-    });    
+        expect(deEmail.attributes['ng-reflect-model']).toBe('e');
+        expect(dePassword.attributes['ng-reflect-model']).toBe('p');
+    });
 });

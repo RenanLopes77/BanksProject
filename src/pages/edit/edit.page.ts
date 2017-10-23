@@ -1,25 +1,20 @@
-import { Component }        from "@angular/core";
-import { 
-         NavParams, 
-         ViewController,
-         NavController, 
-         AlertController, Alert, 
-         LoadingController,  
-         ToastController 
-       }                    from "ionic-angular";
-import { BankService }      from "../services/bank.service";
-import { Bank }             from "../../interfaces/bank";
+import { Component }                          from '@angular/core';
+import { NavParams, ViewController,
+         AlertController, Alert,
+         LoadingController, ToastController,
+         Loading }                            from 'ionic-angular';
+import { Bank }                               from '../../interfaces/bank';
+import { BankService }                        from '../../services/bank.service';
 
 @Component({
     selector: 'edit-page',
-    templateUrl: 'edit.page.html'
+    templateUrl: 'edit.page.html',
 })
 export class EditPage {
-    
-    bank: Bank;
+    public bank: Bank;
 
-    loading = this.loadingCtrl.create({
-        content: 'Please wait...'
+    private loading: Loading = this.loadingCtrl.create({
+        content: 'Please wait...',
     });
 
     constructor (
@@ -27,46 +22,36 @@ export class EditPage {
         private _bankService: BankService,
         public viewCtrl: ViewController,
         public alertCtrl: AlertController,
-        public navCtrl: NavController,
         public loadingCtrl: LoadingController,
-        public toastCtrl: ToastController
+        public toastCtrl: ToastController,
     ) { }
 
-    ngOnInit() {
-        this.bank = this.navParams.get('bank')
+    private ngOnInit(): void {
+        this.bank = this.navParams.get('bank');
     }
 
     private delete(bank: Bank): void {
         this.loading.present();
         this._bankService.delete(bank.db_id).subscribe(
             response => {
-                if (!response) {
-                    this.errorToast();
-                }
                 this.loading.dismiss();
                 this.viewCtrl.dismiss();
-            },
-            error => {
-                // tratar error
             });
     }
 
-    update(bank: Bank): void {
+    private update(bank: Bank): void {
         this.loading.present();
-        this._bankService.update(bank).subscribe((response) => {
-            if(!response){
-                this.errorToast();
-            }
+        this._bankService.update(bank).subscribe(() => {
             this.loading.dismiss();
-            this.navCtrl.pop();
+            this.viewCtrl.dismiss();
         });
     }
 
-    close(): void {
-        this.navCtrl.pop();
+    private close(): void {
+        this.viewCtrl.dismiss();
     }
 
-    dismiss() {
+    private dismiss(): void {
         this.viewCtrl.dismiss(true);
     }
 
@@ -80,14 +65,5 @@ export class EditPage {
             ],
         });
         alert.present();
-    }
-
-    errorToast() {
-        const toast = this.toastCtrl.create({
-            message: "Could not complete the operation.",
-            duration: 2500,
-            position: 'middle'
-        });
-        toast.present();
     }
 }

@@ -10,8 +10,9 @@ import { LoginPage }                                from '../pages/login/login';
 import { BankPage }                                 from '../pages/bank/bank';
 import { AddPage }                                  from '../pages/add/add.page';
 import { EditPage }                                 from '../pages/edit/edit.page';
-import { LoginService }                             from '../pages/services/login.service';
-import { BankService }                              from '../pages/services/bank.service';
+import { BankService }                              from '../services/bank.service';
+import { LoginService }                             from '../services/login.service';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { BankService }                              from '../pages/services/bank
     SplashScreen,
     BankService,
     LoginService,
-    // { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
 export class AppModule { }

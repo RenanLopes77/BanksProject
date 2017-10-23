@@ -1,5 +1,5 @@
 export class Bank {
-    code: string;
-    name: string;
-    db_id: number;
+    public code: string;
+    public name: string;
+    public db_id: number;
 }
