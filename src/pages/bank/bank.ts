@@ -1,10 +1,6 @@
 import { Component }                                 from '@angular/core';
-import { 
-         ModalController, 
-         NavController, 
-         NavParams, 
-         ToastController
-       }                                             from 'ionic-angular';
+import { ModalController, NavController, NavParams,
+         ToastController }                           from 'ionic-angular';
 import { BankService }                               from '../services/bank.service';
 import { AddPage }                                   from '../add/add.page';
 import { EditPage }                                  from '../edit/edit.page';
@@ -66,6 +62,7 @@ export class BankPage {
             this.getBanks();
         });
         modal.present();
+        String(1)
     }
 
     presentEditModal(bank: Bank) {
@@ -82,11 +79,11 @@ export class BankPage {
     }
 
     errorToast(errorCode: string) {
-    const toast = this.toastCtrl.create({
-        message: "Could not complete the operation, error: " + errorCode,
-        duration: 2500,
-        position: 'middle'
-    });
-    toast.present();
+        const toast = this.toastCtrl.create({
+            message: "Could not complete the operation, error: " + errorCode,
+            duration: 2500,
+            position: 'middle',
+        });
+        toast.present();
     }
 }

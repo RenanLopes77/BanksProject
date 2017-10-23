@@ -3,7 +3,7 @@ import {
          NavParams, 
          ViewController,
          NavController, 
-         AlertController, 
+         AlertController, Alert, 
          LoadingController,  
          ToastController 
        }                    from "ionic-angular";
@@ -35,16 +35,20 @@ export class EditPage {
     ngOnInit() {
         this.bank = this.navParams.get('bank')
     }
-    
-    delete(bank: Bank): void {
+
+    private delete(bank: Bank): void {
         this.loading.present();
-        this._bankService.delete(bank.db_id).subscribe((response) => {
-            if(!response){
-                this.errorToast();
-            }
-            this.loading.dismiss();
-            this.navCtrl.pop();
-         });
+        this._bankService.delete(bank.db_id).subscribe(
+            response => {
+                if (!response) {
+                    this.errorToast();
+                }
+                this.loading.dismiss();
+                this.viewCtrl.dismiss();
+            },
+            error => {
+                // tratar error
+            });
     }
 
     update(bank: Bank): void {
@@ -66,23 +70,14 @@ export class EditPage {
         this.viewCtrl.dismiss(true);
     }
 
-
-    deleteConfirm() {
-        const alert = this.alertCtrl.create({
+    private deleteConfirm(): void {
+        const alert: Alert = this.alertCtrl.create({
             title: 'Delete Confirm',
             message: 'Are you sure you want to delete this bank?',
             buttons: [
-                {
-                    text: 'Cancel',
-                    handler: () => { }
-                },
-                {
-                    text: 'Delete',
-                    handler: () => {
-                    this.delete(this.bank);
-                    }
-                }
-            ]
+                {text: 'Cancel'},
+                {text : 'Delete', handler: () => this.delete(this.bank)},
+            ],
         });
         alert.present();
     }

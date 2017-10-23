@@ -6,33 +6,31 @@ import { Observable }                    from 'rxjs/Observable';
 @Injectable()
 export class BankService {
 
+    private banksUrl: string = 'http://api.imobzi.com/v1/banks';
+
     constructor(
         private http: Http,
     ) { }
-    banksUrl = 'http://api.imobzi.com/v1/banks'
 
-    getBanks(): Observable<Bank[]> {
-        let myHeaders = new Headers;
+    private getHttpHeaders(): Headers {
+        let myHeaders: Headers = new Headers;
         let token: string = localStorage.getItem('token');
         myHeaders.set('Content-Type', 'application/json');
         myHeaders.set('Authorization', token);
-        return new Observable<Bank[]> (observer => {
-            this.http.get(this.banksUrl, {  headers: myHeaders }).subscribe (response => {
-                observer.next(response.json().success.banks as Bank[]);
-            },
-                error => {
-                    observer.next(error);               
-                }
-            );
+        return myHeaders;
+    }
+
+    public getBanks(): Observable<Bank[]> {
+
+        return new Observable<Bank[]>(observer => {
+            this.http.get(this.banksUrl, { headers: this.getHttpHeaders() }).subscribe(
+                response => observer.next(response.json().success.banks as Bank[]),
+                error => observer.next(error));
         });
     }
 
-    create(bankName: string, bankCode: string): Observable<Boolean>{
-        let myHeaders = new Headers;
-        let token: string = localStorage.getItem('token');
-        myHeaders.set('Content-Type', 'application/json');
-        myHeaders.set('Authorization', token);
-        let options = new RequestOptions({ headers: myHeaders });
+    public create(bankName: string, bankCode: string): Observable<Boolean>{
+        let options = new RequestOptions({ headers: this.getHttpHeaders() });
         let params: JSON = JSON.parse('{}');
         params['name'] = bankName;
         params['code'] = bankCode;
@@ -49,11 +47,7 @@ export class BankService {
 
     delete(bankId: number): Observable<Boolean> {
         const url = 'http://api.imobzi.com/v1/bank/' + bankId ;
-        let myHeaders = new Headers;
-        let token: string = localStorage.getItem('token');
-        myHeaders.set('Content-Type', 'application/json');
-        myHeaders.set('Authorization', token);
-        let options = new RequestOptions({ headers: myHeaders });
+        let options = new RequestOptions({ headers: this.getHttpHeaders() });
         return new Observable<Boolean> (observer => {
             this.http.delete(url, options).subscribe(() => {
                 observer.next(true);
@@ -67,11 +61,7 @@ export class BankService {
 
     update(bank: Bank): Observable<Boolean> {
         const url = 'http://api.imobzi.com/v1/bank/' + bank.db_id ;
-        let myHeaders = new Headers;
-        let token: string = localStorage.getItem('token');
-        myHeaders.set('Content-Type', 'application/json');
-        myHeaders.set('Authorization', token);
-        let options = new RequestOptions({ headers: myHeaders });
+        let options = new RequestOptions({ headers: this.getHttpHeaders() });
         let params: JSON = JSON.parse('{}');
         params['name'] = bank.name;
         params['code'] = bank.code;

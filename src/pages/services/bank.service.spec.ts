@@ -16,26 +16,28 @@ describe('BankService', () => {
             providers: [
                 BankService,
                 { provide: XHRBackend, useClass: MockBackend }
-            ]
+            ],
         });
     });
 
-    it('should return an Observable<Bank[]>',
-        inject([BankService, XHRBackend], (_bankService, mockBackend) => {
+    it('should return an Observable<Bank[]>', inject([BankService, XHRBackend], (_bankService, mockBackend) => {
 
-            const banksResponse = {
+            const banksResponse: any = {
                 success: {
-                    banks: [{code: "1", name: "Banco1", db_id: 11}]}
-                }
- 
-            
+                    banks: [
+                        {code: '1', name: 'Banco1', db_id: 11},
+                    ],
+                    test: 'sdfd1',
+                },
+            };
+
             mockBackend.connections.subscribe((connection) => {
                 connection.mockRespond(new Response(new ResponseOptions({
                   body: JSON.stringify(banksResponse)
                 })));
             });
 
-            _bankService.getBanks().subscribe(response => {        
+            _bankService.getBanks().subscribe(response => {
                 expect(response[0].code).toBe('1');
                 expect(response[0].name).toBe('Banco1');
             });
@@ -44,7 +46,7 @@ describe('BankService', () => {
     
     describe('create()', () => {
         it('should return TRUE',
-        inject([BankService, XHRBackend], (_bankService: BankService, mockBackend: MockBackend) => {
+            inject([BankService, XHRBackend], (_bankService: BankService, mockBackend: MockBackend) => {
                 const mockResponse = {
                     success: {
                         bank: 159,
