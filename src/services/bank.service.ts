@@ -34,7 +34,7 @@ export class BankService {
         });
     }
 
-    public create(bankName: string, bankCode: string): Observable<Boolean>{
+    public create(bankName: string, bankCode: string): Observable<Boolean> {
         let options: RequestOptions = new RequestOptions({ headers: this.getHttpHeaders() });
         let params: JSON = JSON.parse('{}');
         params['name'] = bankName;

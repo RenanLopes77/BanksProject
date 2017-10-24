@@ -9,6 +9,7 @@ import { Bank }                                  from '../../interfaces/bank';
 import { NavParamsMock }                         from '../../mock/navparams-mock';
 import { BankServiceMock }                       from '../../mock/bankservice-mock';
 import { BankService }                           from '../../services/bank.service';
+import { LoginPage } from '../login/login';
 
 describe('BankPage', () => {
     let comp: BankPage;
@@ -43,5 +44,10 @@ describe('BankPage', () => {
         de = fixture.debugElement.query(By.css('ion-list')).nativeElement.innerText;
         expect(de).toContain('111');
         expect(de).toContain('MeuBanco');
+    });
+
+    it('should clean the localStorage', () => {
+        comp.exit();
+        expect(localStorage.length).toBe(0);
     });
 });

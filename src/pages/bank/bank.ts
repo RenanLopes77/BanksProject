@@ -70,7 +70,7 @@ export class BankPage {
         modal.present();
     }
 
-    private exit(): void {
+    public exit(): void {
         this.navCtrl.setRoot(LoginPage);
         localStorage.clear();
     }

@@ -22,7 +22,6 @@ export class AddPage {
         private navParams: NavParams,
         private _bankService: BankService,
         public viewCtrl: ViewController,
-        public navCtrl: NavController,
         public loadingCtrl: LoadingController,
     ) { }
 
@@ -32,15 +31,11 @@ export class AddPage {
         bankCode = bankCode.trim();
         this._bankService.create(bankName, bankCode).subscribe((response) => {
             this.loading.dismiss();
-            this.viewCtrl.dismiss();
+            this.close();
         });
     }
 
     private close(): void {
-        this.navCtrl.pop();
-    }
-
-    private dismiss(): void {
         this.viewCtrl.dismiss();
     }
 }
