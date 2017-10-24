@@ -26,7 +26,8 @@ export class LoginService {
                 localStorage.setItem('token', response.json().success.token);
                 observer.next(true),
                 error => {
-                    observer.next(error);
+                    observer.next(false);
+                    console.log(error);
                     this.errorToast(error.status);
                 };
             });
