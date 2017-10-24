@@ -56,4 +56,6 @@ describe ('EditPage', () => {
         expect(deCode.attributes['ng-reflect-model']).toBe('111');
         expect(deName.attributes['ng-reflect-model']).toBe('MeuBanco');
     });
+
+    it('should call close()', );
 });

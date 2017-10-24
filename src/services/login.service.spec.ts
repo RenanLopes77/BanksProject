@@ -9,14 +9,13 @@ import { MockBackend }                       from "@angular/http/testing";
 import { LoginService }                      from "./login.service";
 
 describe('BanksService', () => {
-    
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
                 LoginService,
                 { provide: XHRBackend, useClass: MockBackend }
-            ]
+            ],
         }).compileComponents();
     });
     
@@ -48,5 +47,9 @@ describe('BanksService', () => {
                 });
             })
         );
+
+        it('should return an error', inject([BankService, XHRBackend], (_bankService: BankService, mockBackend: MockBackend) => {
+            //COLOCAR TRATAMENTO DE ERRO AQUI
+        }));
     });
 });

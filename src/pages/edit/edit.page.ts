@@ -51,10 +51,6 @@ export class EditPage {
         this.viewCtrl.dismiss();
     }
 
-    private dismiss(): void {
-        this.viewCtrl.dismiss(true);
-    }
-
     private deleteConfirm(): void {
         const alert: Alert = this.alertCtrl.create({
             title: 'Delete Confirm',

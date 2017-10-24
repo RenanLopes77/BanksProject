@@ -22,7 +22,6 @@ export class AddPage {
         private navParams: NavParams,
         private _bankService: BankService,
         public viewCtrl: ViewController,
-        public navCtrl: NavController,
         public loadingCtrl: LoadingController,
     ) { }
 
@@ -37,10 +36,6 @@ export class AddPage {
     }
 
     private close(): void {
-        this.navCtrl.pop();
-    }
-
-    private dismiss(): void {
         this.viewCtrl.dismiss();
     }
 }
