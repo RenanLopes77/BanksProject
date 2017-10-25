@@ -1,6 +1,6 @@
 import { Injectable }                    from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { ToastController, Toast }        from 'ionic-angular';
+import { Toast, ToastController }        from 'ionic-angular';
 import { Observable }                    from 'rxjs/Observable';
 import { Bank }                          from '../interfaces/bank';
 
@@ -23,58 +23,66 @@ export class BankService {
     }
 
     public getBanks(): Observable<Bank[]> {
-
         return new Observable<Bank[]>(observer => {
             this.http.get(this.banksUrl, { headers: this.getHttpHeaders() }).subscribe(
-                response => observer.next(response.json().success.banks as Bank[]),
+                response => {
+                    observer.next(response.json().success.banks as Bank[]);
+                },
                 error => {
-                    observer.next();
                     this.errorToast(error.status);
-                });
+                    observer.error(error);
+                },
+            );
         });
     }
 
     public create(bankName: string, bankCode: string): Observable<Boolean> {
-        let options: RequestOptions = new RequestOptions({ headers: this.getHttpHeaders() });
         let params: JSON = JSON.parse('{}');
         params['name'] = bankName;
         params['code'] = bankCode;
         return new Observable<Boolean> (observer => {
-            this.http.post(this.banksUrl, JSON.stringify(params), options).subscribe(
-                response => observer.next(true),
+            this.http.post(this.banksUrl, JSON.stringify(params), { headers: this.getHttpHeaders() }).subscribe(
+                response => {
+                    observer.next(true);
+                },
                 error => {
-                    observer.next(error);
                     this.errorToast(error.status);
-                });
+                    observer.error(error);
+                },
+            );
         });
     }
 
     public delete(bankId: number): Observable<Boolean> {
         const url: string = 'http://api.imobzi.com/v1/bank/' + bankId ;
-        let options: RequestOptions = new RequestOptions({ headers: this.getHttpHeaders() });
         return new Observable<Boolean> (observer => {
-            this.http.delete(url, options).subscribe(
-                response => observer.next(true),
+            this.http.delete(url, { headers: this.getHttpHeaders() }).subscribe(
+                response => {
+                    observer.next(true);
+                },
                 error => {
-                    observer.next();
                     this.errorToast(error.status);
-                });
+                    observer.error(error);
+                },
+            );
         });
     }
 
     public update(bank: Bank): Observable<Boolean> {
         const url: string = 'http://api.imobzi.com/v1/bank/' + bank.db_id ;
-        let options: RequestOptions = new RequestOptions({ headers: this.getHttpHeaders() });
         let params: JSON = JSON.parse('{}');
-        params['name'] = bank.name;
-        params['code'] = bank.code;
+        params['name'] = bank.name.trim();
+        params['code'] = bank.code.trim();
         return new Observable<Boolean> (observer => {
-            this.http.post(url, JSON.stringify(params), options).subscribe(
-                response => observer.next(true),
+            this.http.post(url, JSON.stringify(params), { headers: this.getHttpHeaders() }).subscribe(
+                response => {
+                    observer.next(true);
+                },
                 error => {
-                    observer.next();
                     this.errorToast(error.status);
-                });
+                    observer.error(error);
+                },
+            );
         });
     }
 

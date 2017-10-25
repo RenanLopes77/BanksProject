@@ -54,23 +54,20 @@ export class BankPage {
         }
     }
 
-    private presentAddModal(): void {
-        let modal: Modal = this.modalCtrl.create(AddPage);
+    private presentModal(bank: Bank): void {
+        let modal: Modal;
+        if (bank !== null) {
+            modal = this.modalCtrl.create(EditPage, { bank: bank });
+        } else {
+            modal = this.modalCtrl.create(AddPage);
+        }
         modal.onDidDismiss(response => {
             this.getBanks();
         });
         modal.present();
     }
 
-    private presentEditModal(bank: Bank): void {
-        let modal: Modal = this.modalCtrl.create(EditPage, { bank: bank });
-        modal.onDidDismiss(response => {
-            this.getBanks();
-        });
-        modal.present();
-    }
-
-    private exit(): void {
+    public exit(): void {
         this.navCtrl.setRoot(LoginPage);
         localStorage.clear();
     }

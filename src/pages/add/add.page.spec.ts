@@ -47,7 +47,4 @@ describe('AddPage', () => {
         deCode = fixture.debugElement.query(By.css('#bank-code'));
         expect(deCode.attributes['ng-reflect-model']).toBe('1');
     });
-
-    it('should call close()', () => {
-    });
 });

@@ -1,14 +1,20 @@
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { DebugElement }                      from '@angular/core';
+import { ComponentFixture, TestBed, inject }          from '@angular/core/testing';
+import { DebugElement }                               from '@angular/core';
 import { HttpModule,
          Http,
          Response,
          ResponseOptions,
-         XHRBackend }                        from '@angular/http';
-import { MockBackend }                       from '@angular/http/testing';
-import { LoginService }                      from './login.service';
-import { ToastController }                   from 'ionic-angular';
-import { ToastControllerMock }               from '../mock/toastcontroller-mock';
+         XHRBackend }                                 from '@angular/http';
+import { MockBackend, MockConnection }                from '@angular/http/testing';
+import { LoginService }                               from './login.service';
+import { ToastControllerMock }                        from '../mock/toastcontroller-mock';
+import { ToastController }                            from 'ionic-angular';
+import { ResponseType, Request, ResponseOptionsArgs } from '@angular/http';
+
+class MockError extends Response implements Error {
+   public name: any;
+   public message: any;
+}
 
 describe('BankService', () => {
     beforeEach(() => {
@@ -49,32 +55,22 @@ describe('BankService', () => {
             }),
         );
 
-        fit('should return an error', inject([LoginService, XHRBackend], (_loginService: LoginService, mockBackend: MockBackend) => {
-            const user: any = {
-                email: 'e',
-                password: 'p',
-            };
+        it('should return login() error', inject([LoginService, XHRBackend], (_loginService: LoginService, mockBackend: MockBackend) => {
 
-            const mockResponse: any = {
-                success: {
-                    success: [
-                        // { message: '', token: '' },
-                    ],
+            mockBackend.connections.subscribe((connection: MockConnection) => {
+                let body: string = JSON.stringify({key: 'val'});
+                let opts: ResponseOptionsArgs = {url: 'http://felipe.com', type: ResponseType.Error, status: 404, body: body, headers: null};
+                let responseOpts: ResponseOptions = new ResponseOptions(opts);
+                connection.mockError(new MockError(responseOpts));
+            });
+
+            _loginService.login('email', 'password').subscribe(
+                response => {
+                    console.log('success');
                 },
-            };
-
-            const mr: any = null;
-
-            mockBackend.connections.subscribe(connection => {
-                connection.mockRespond(new Response(new ResponseOptions({
-                    body: JSON.stringify(mockResponse),
-                })));
-            });
-            
-            _loginService.login(user.email, user.password).subscribe(response => {
-                console.log('chega');
-            }, error => {
-            });
+                error => {
+                    expect(error.status).toBe(404);
+                });
         }));
     });
 });

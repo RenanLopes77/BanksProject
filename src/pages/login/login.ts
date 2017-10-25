@@ -30,11 +30,15 @@ export class LoginPage {
         });
 
         loading.present();
-        this._loginService.login(this.email, this.password).subscribe(response => {
-            if (response)
-                this.loadPage();
-            loading.dismiss();
-        });
+        this._loginService.login(this.email, this.password).subscribe(
+            response => {
+                if (response)
+                    this.loadPage();
+                loading.dismiss();
+            },
+            error => {
+                loading.dismiss();
+            });
     }
 
     private loadPage(): void {

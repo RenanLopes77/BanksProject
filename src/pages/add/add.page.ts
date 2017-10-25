@@ -1,7 +1,9 @@
 import { Component }                        from '@angular/core';
 import { NavParams, ViewController,
          NavController, LoadingController,
-         Loading }                          from 'ionic-angular';
+         Loading,
+         ToastController,
+         Toast }                            from 'ionic-angular';
 import { Bank }                             from '../../interfaces/bank';
 import { BankService }                      from '../../services/bank.service';
 
@@ -23,21 +25,35 @@ export class AddPage {
         private _bankService: BankService,
         public viewCtrl: ViewController,
         public loadingCtrl: LoadingController,
+        private toastCtrl: ToastController,
     ) { }
 
     private add(bankName: string, bankCode: string): void {
-        this.loading.present();
-        if (bankName !== '' || bankCode !== '') {
-            bankName = bankName.trim();
-            bankCode = bankCode.trim();
-            this._bankService.create(bankName, bankCode).subscribe((response) => {
-                this.loading.dismiss();
-                this.viewCtrl.dismiss();
-            });
+        if (bankName === '' || bankCode === '')
+            this.incompleteData();
+        else {
+            this.loading.present();
+            this._bankService.create(bankName, bankCode).subscribe(
+                response => {
+                    this.close();
+                },
+                error => {
+                    this.close();
+                });
         }
     }
 
     private close(): void {
+        this.loading.dismiss();
         this.viewCtrl.dismiss();
+    }
+
+    private incompleteData(): void {
+        const toast: Toast = this.toastCtrl.create({
+            message: 'There are blank fields',
+            duration: 2000,
+            position: 'middle',
+        });
+        toast.present();
     }
 }

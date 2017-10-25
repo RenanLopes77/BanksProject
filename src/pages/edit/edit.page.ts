@@ -34,22 +34,24 @@ export class EditPage {
         this.loading.present();
         this._bankService.delete(bank.db_id).subscribe(
             response => {
-                this.loading.dismiss();
-                this.viewCtrl.dismiss();
+                this.close();
+            },
+            error => {
+                this.close();
             });
     }
 
     private update(bank: Bank): void {
         this.loading.present();
-        this._bankService.update(bank).subscribe(() => {
-            this.loading.dismiss();
-            this.viewCtrl.dismiss();
+        this._bankService.update(bank).subscribe(
+        response => {
+            this.close();
+        },
+        error => {
+            this.close();
         });
     }
 
-    private close(): void {
-        this.viewCtrl.dismiss();
-    }
 
     private deleteConfirm(): void {
         const alert: Alert = this.alertCtrl.create({
@@ -61,5 +63,10 @@ export class EditPage {
             ],
         });
         alert.present();
+    }
+
+    private close(): void {
+        this.loading.dismiss();
+        this.viewCtrl.dismiss();
     }
 }

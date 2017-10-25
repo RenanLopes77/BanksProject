@@ -18,19 +18,21 @@ export class LoginService {
         let params: JSON = JSON.parse('{}');
         params['email'] = email;
         params['password'] = password;
+        params['device'] = 'core';
         // params['email'] = 'eduardo@quickfast.com';
         // params['password'] = 'iquick7s@2017';
-        params['device'] = 'core';
-        return new Observable<Boolean>(observer => {
-            this.http.post(this.loginUrl, JSON.stringify(params), options).subscribe(response => {
-                localStorage.setItem('token', response.json().success.token);
-                observer.next(true),
+
+        return new Observable<Boolean> (observer => {
+            this.http.post(this.loginUrl, JSON.stringify(params), options).subscribe(
+                response => {
+                    localStorage.setItem('token', response.json().success.token);
+                    observer.next(true);
+                },
                 error => {
-                    observer.next(false);
-                    console.log(error);
+                    observer.error(error);
                     this.errorToast(error.status);
-                };
-            });
+                },
+            );
         });
     }
 

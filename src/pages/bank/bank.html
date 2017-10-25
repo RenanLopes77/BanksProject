@@ -22,7 +22,7 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <button ion-button class="large" (click)="presentAddModal()">
+            <button ion-button class="large" (click)="presentModal(null)">
                 Add
             </button>
         </ion-row>
@@ -41,10 +41,10 @@
         </ion-row>
         <ion-list>
             <ion-row *ngFor="let bank of banks">
-                <ion-col col-2 class="text-pointer" (click)="presentEditModal(bank)">
+                <ion-col col-2 class="text-pointer" (click)="presentModal(bank)">
                     {{bank.code}}
                 </ion-col>
-                <ion-col col-4 class="text-pointer" (click)="presentEditModal(bank)">
+                <ion-col col-4 class="text-pointer" (click)="presentModal(bank)">
                     {{bank.name}}
                 </ion-col>
             </ion-row>
